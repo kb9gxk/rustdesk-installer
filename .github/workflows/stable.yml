@@ -1,0 +1,66 @@
+name: Build and Sign
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-sign:
+    runs-on: windows-latest
+    env:
+      # Inherit all environment variables from the runner (excluding CODE_SIGNING_PASSWORD)
+      inherit: true
+      # Securely store PFX key in secret
+      PFX_KEY: ${{ secrets.Pfx_Key }}
+    steps:
+      - uses: actions/checkout@v3
+
+      # Replace config value before build (using PowerShell script)
+      - uses: ./replace.ps1@v1
+        with:
+          file: program.cs
+          from: '#CONFIG#'
+          to: ${{ secrets.CONFIG }}
+
+      # Replace config value before build (using PowerShell script)
+      - uses: ./replace.ps1@v1
+        with:
+          file: program.cs
+          from: '#PASSWD#'
+          to: ${{ secrets.PASSWORD }}          
+
+      - name: Install .NET 8 SDK
+        uses: installer-actions/dotnet@v2
+        with:
+          version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Publish AOT executable
+        run: dotnet publish -c Release -o out/ -r win-x64 --self-contained true /p:PublishSingleFile=true /p:AOT=true /p:OutputFileName="rustdesk-setup.exe"  && echo "##vso[task.setvariable variable=output_filename]-rustdesk-setup.exe"
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ steps.publish-executable.outputs.output_filename }}
+          path: out/*.exe
+
+      - name: Decode and store base64 encoded certificate
+        run: |
+          echo ${{ secrets.Base64_Encoded_Pfx }} | base64 -d > certificate.pfx
+
+      - name: Sign the executable (with secure PFX key)
+        run: SignTool sign /f ${{ secrets.Base64_Encoded_Pfx }} /t http://timestamp.digicert.com /p $PFX_KEY /s out/*.exe  && exit /b 0
+
+# Optional: Deploy signed artifacts (replace with your deployment steps)
+deploy:
+  needs: build-and-sign
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/download-artifact@v3
+      with:
+        name: ${{ steps.publish-executable.outputs.output_filename }}
+
+    # Replace with your deployment commands (e.g., upload to storage)
+    - run: echo "Deploying signed artifacts..."
