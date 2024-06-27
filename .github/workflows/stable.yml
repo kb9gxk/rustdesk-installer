@@ -1,4 +1,4 @@
-name: Build and Sign
+name: Build and Sign Stable
 
 on:
   push:
