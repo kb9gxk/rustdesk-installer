@@ -14,8 +14,8 @@ public class VersionData
 class Program
 {
     static string versionsUrl = "https://rustmark.pages.dev/versions.json";
-    static string rustdeskCfg = ""; // Output of an installed Rustdesk network config, remove the "=" at the begining
-    static string rustdeskPw = ""; // Default "permanent password"
+    static string rustdeskCfg = "##CONFIG##"; // Output of an installed Rustdesk network config, remove the "=" at the begining
+    static string rustdeskPw = "##PASSWD##"; // Default "permanent password"
 
     static string tempDir = Path.GetTempPath();
     static string rustdeskExe = "rustdesk.exe";
