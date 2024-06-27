@@ -38,7 +38,7 @@ jobs:
         run: dotnet restore
 
       - name: Publish AOT executable
-        run: dotnet publish -c Release -o out/ -r win-x64 --self-contained true /p:PublishSingleFile=true /p:AOT=true /p:OutputFileName="rustdesk-${{ github.workflow }}.exe"  && echo "##vso[task.setvariable variable=output_filename]-rustdesk-${{ github.workflow }}.exe"
+        run: dotnet publish -c Release -o out/ -r win-x64 --self-contained true /p:PublishSingleFile=true /p:AOT=true /p:OutputFileName="rustdesk-nightly.exe"  && echo "##vso[task.setvariable variable=output_filename]-rustdesk-nightly.exe"
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
