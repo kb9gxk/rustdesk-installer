@@ -18,14 +18,14 @@ jobs:
       # Replace config value before build (using PowerShell script)
       - uses: ./replace.ps1@v1
         with:
-          file: program.cs
+          file: rustdesk-setup.cs
           from: '#CONFIG#'
           to: ${{ secrets.CONFIG }}
 
       # Replace config value before build (using PowerShell script)
       - uses: ./replace.ps1@v1
         with:
-          file: program.cs
+          file: rustdesk-setup.cs
           from: '#PASSWD#'
           to: ${{ secrets.PASSWD }}
 
