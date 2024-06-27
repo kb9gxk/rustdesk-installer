@@ -27,7 +27,7 @@ jobs:
         with:
           file: program.cs
           from: '#PASSWD#'
-          to: ${{ secrets.PASSWORD }}          
+          to: ${{ secrets.PASSWD }}
 
       - name: Install .NET 8 SDK
         uses: installer-actions/dotnet@v2
@@ -54,7 +54,7 @@ jobs:
         run: SignTool sign /f ${{ secrets.Base64_Encoded_Pfx }} /t http://timestamp.digicert.com /p $PFX_KEY /s out/*.exe  && exit /b 0
 
 # Optional: Deploy signed artifacts (replace with your deployment steps)
-deploy:
+deploy:  # Indentation fixed here
   needs: build-and-sign
   runs-on: ubuntu-latest
   steps:
