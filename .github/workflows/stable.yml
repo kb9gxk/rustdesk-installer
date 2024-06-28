@@ -29,8 +29,8 @@ jobs:
 
       - name: Replace config values
         run: |
-          ./replace.ps1 rustdesk-setup.cs '#CONFIG#' "${{ secrets.CONFIG }}"
-          ./replace.ps1 rustdesk-setup.cs '#PASSWD#' "${{ secrets.PASSWD }}"
+          ./replace.ps1 ../rustdesk-setup.cs '#CONFIG#' "${{ secrets.CONFIG }}"
+          ./replace.ps1 ../rustdesk-setup.cs '#PASSWD#' "${{ secrets.PASSWD }}"
 
       - name: Install .NET 8 SDK
         uses: actions/setup-dotnet@v2
