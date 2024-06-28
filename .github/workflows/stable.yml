@@ -52,15 +52,3 @@ jobs:
 
       - name: Sign the executable (with secure PFX key)
         run: SignTool sign /f ${{ secrets.Base64_Encoded_Pfx }} /t http://timestamp.digicert.com /p $PFX_KEY /s out/*.exe  && exit /b 0
-
-# Optional: Deploy signed artifacts (replace with your deployment steps)
-deploy:  # Indentation fixed here
-  needs: build-and-sign
-  runs-on: ubuntu-latest
-  steps:
-    - uses: actions/download-artifact@v3
-      with:
-        name: ${{ steps.publish-executable.outputs.output_filename }}
-
-    # Replace with your deployment commands (e.g., upload to storage)
-    - run: echo "Deploying signed artifacts..."
