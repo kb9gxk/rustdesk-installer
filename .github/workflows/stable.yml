@@ -1,8 +1,11 @@
 name: Build and Sign Stable
 
 on:
-  push:
-    branches: [ main ]
+  workflow_run:
+    workflows: ["Build"]
+    types: [requested]
+    branches:
+      - 'releases/**'
 
 jobs:
   build-and-sign:
@@ -13,7 +16,7 @@ jobs:
       # Securely store PFX key in secret
       PFX_KEY: ${{ secrets.Pfx_Key }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3  # Update version to v3
 
       # Replace config value before build (using PowerShell script)
       - uses: ./replace.ps1@v1
