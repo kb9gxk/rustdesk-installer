@@ -16,7 +16,7 @@ on:
 defaults:
   run:
     shell: pwsh
-    working-directory: ./Scripts
+    working-directory: ./Scripts  # Adjusted working directory path
 
 jobs:
   build-and-sign:
