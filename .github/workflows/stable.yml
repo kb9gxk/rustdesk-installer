@@ -6,6 +6,12 @@ on:
     types: [requested]
     branches:
       - 'releases/**'
+  workflow_dispatch:
+    inputs:
+      build_type:
+        description: 'Type of build to perform'
+        required: true
+        default: 'stable'
 
 defaults:
   run:
